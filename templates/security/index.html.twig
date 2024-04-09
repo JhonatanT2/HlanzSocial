@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+{% block title %}Lista de Usuarios{% endblock %}
+
+{% block body %}
+    <style>
+        p{
+            margin-bottom: 0px;
+            margin-left: 30px;
+        }
+    </style>
+    <link rel="stylesheet" href="/build/post.css" >
+    <link rel="stylesheet" href="/build/nav.css" >
+
+    <div class="container">
+        <h1 class="my-4">Lista de Usuarios</h1>
+
+        <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Correo Electronico</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>
+                {% if user.imageprofile %}
+                    <img class="userimgc" src="avatares/{{ user.imageprofile }}">
+                {% else %}
+                    <img class="userimgc" src="avatares/user.png">
+                {% endif %}
+                </td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.lastname }}</td>
+                <td>{{ user.email}}</td>
+                <td>
+                    <a href="{{ path('app_user_show', {'id': user.id}) }}">Ver</a>
+                    <a href="{{ path('user_edit', {'id': user.id}) }}">Editar</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+{% endblock %}

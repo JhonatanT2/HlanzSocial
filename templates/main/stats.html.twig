@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Most Liked Post
+{% endblock %}
+
+{% block body %}
+    <style>
+        /* .card{
+            height:80%;
+        } */
+        
+    </style>
+	<div class="container">
+		<div class="row">
+			{% for item in posts|slice(0, 1) %}
+				{% set post = item[0] %}
+				<div class="col-md-5">
+					<div class="card">
+						<h2>Post con mas Likes</h2>
+						<a href="post/{{post.id}}"><img src="postImage/{{ post.image }}" class="card-img-top"></a>
+						<div class="card-body">
+							<h5 class="card-title">{{ post.text }}</h5>
+							<p class="card-text">Likes:
+								{{ item['likeCount'] }}</p>
+							<p class="card-text">
+								<small class="text-muted">Publicado por
+									<a href="user/{{post.iduser.id}}" class="text-decoration-none">{{ post.iduser.name }}</a></small>						
+							</p>
+                        </div>
+					</div>
+				</div>
+				{% endfor %}
+
+				{% for item in postsc|slice(0, 1) %}
+					{% set post = item[0] %}
+					<div class="col-md-5">
+						<div class="card">
+							<h2>Post mas Comentado</h2>
+							<a href="post/{{post.id}}"><img src="postImage/{{ post.image }}" class="card-img-top img-fluid"></a>
+							<div class="card-body">
+								<h5 class="card-title">{{ post.text }}</h5>
+								<p class="card-text">Comentarios:
+									{{ item['commentCount'] }}</p>
+								<p class="card-text">
+									<small class="text-muted">Publicado por
+										<a href="user/{{post.iduser.id}}" class="text-decoration-none">{{ post.iduser.name }}</a></small>
+								</p>
+                            </div>
+                        </div>
+					</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}

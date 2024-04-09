@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Welcome - [Plain HTML]</title>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: #E4E9F7;
+    font-family: 'Montserrat', sans-serif;
+}
+.container{
+    padding: 0px 40px 50px;
+    /* background-color: rgb(62, 28, 126); */
+    background-image: url(/images/halanz.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 10px;
+    position: relative;
+    /* margin-bottom: 100px;
+    margin-left: 10px; */
+}
+
+.fa-yoast{
+    font-size: 20px;
+    font-weight: bold;
+}
+.fa-yoast:hover{
+    color: #402069;
+}
+.brand{
+    font-weight: 700;
+}
+.fa-twitter:hover,.fa-life-ring:hover{
+    cursor: pointer;
+}
+.h1{
+    font-size: 50px;
+}
+.row{
+    display: flex;
+    align-items: center;
+}
+#search h5{
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+input,button,button:focus{
+    border: none;
+    outline: none;
+}
+input{
+    width: 300px;
+    height: 50px;
+}
+button{
+    background-color: #ff414ed7;
+    width: 140px;
+    height: 50px;
+    font-weight: bold;
+}
+button:hover{
+    background-color: #ff414ebd;
+}
+button:hover > .fa-long-arrow-right{
+    padding-left: 5px;
+    transition: 200ms ease-in 0s;
+}
+#search button{
+    position: relative;
+    left: -4px;
+}
+#search{
+    position: absolute;
+    bottom: -20px;
+}
+@media(min-width:300px) and (max-width:426px){
+    .container{
+        padding-left: 20px;
+        padding-right: 10px;
+        padding-bottom: 0px;
+    }
+    input{
+        width: 150px;
+    }
+    button{
+        width: 140px;
+    }
+}
+@media(min-width:427px) and (max-width:575px){
+    .container{
+        padding-left: 20px;
+        padding-right: 10px;
+        padding-bottom: 1px;
+    }
+    input{
+        width: 220px;
+    }
+    button{
+        width: 140px;
+    }
+}
+    </style>
+</head>
+
+<body>
+    <div class="container mt-4">
+    <div class="d-flex align-items-center">
+        <div class="bg-white p-2 px-3">
+            <img src="/images/hlanz.png" class="img-fluid">
+        </div>
+        
+        <div class="ml-auto text-white">
+            <span class="fa fa-twitter btn"></span><span class="fa fa-life-ring btn"></span>
+        </div>
+    </div>
+    <div class="row text-white my-5 py-5">
+        <div class="col-md-6">
+            <p class="h1 font-weight-bold text-dark">Bienvenidos a HLANZ Social !</p>
+        </div>
+        <div class="col-lg-5 col-md-6 pt-md-0 pt-3 border border-dark rounded bg-dark">
+            <h5 class="pb-md-0 pb-3">Conecta, comparte y descubre en nuestra vibrante comunidad en línea. 
+            <b>HLANZ Social</b> es el lugar donde la creatividad encuentra su hogar y las amistades se cultivan.
+             Publica tus momentos favoritos, interactúa con amigos y explora historias fascinantes de usuarios de
+              todo el instituto. Sé parte de una experiencia social única que celebra la diversidad y la autenticidad.</h5>
+        </div>
+    </div>
+    <div>
+        <h5 class="text-white">Logueate para empezar tu experiencia!</h5>
+        <div>     
+            <a href="/login"><button  class="text-white py-2 px-3">Empezar! <span class="fa fa-long-arrow-right"></span></button></a>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

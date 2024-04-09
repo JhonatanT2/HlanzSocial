@@ -1,0 +1,7 @@
+controllers:
+    resource: ../src/Controller/
+    type: attribute
+
+ajax_route:
+    path: /ajax-action
+    controller: App\Controller\LikeController::add

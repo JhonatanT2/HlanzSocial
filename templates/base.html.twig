@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="/build/nav.css">
+            <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+            
+
+        {% endblock %}
+
+        {% block javascripts %}
+            {# {{ encore_entry_script_tags('app') }} #}
+            <script src="/build/nav.js" defer></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>           
+        {% endblock %}
+    </head>
+    <body id="body-pd">
+        <nav class="sidebar close">
+        <header>
+            <div class="image-text">
+                <span class="image">
+                {% if app.user.imageprofile %}
+                    <img class="" src="/avatares/{{ app.user.imageprofile }}" alt="">
+                {% else %}
+                    <img class="" src="/avatares/user.png" alt="">
+                {% endif %}
+                </span>
+
+                <div class="text logo-text">
+                    <span class="name">{% if app.user %} {{ app.user.name }} {% endif %}</span>
+                    <span class="profession "><a class="fs-6 fw-light text-decoration-none" href="/user/{{app.user.id}}">Ver Perfil</a></span>
+                </div>
+            </div>
+
+            <i class='bx bx-chevron-right toggle'></i>
+        </header>
+
+        <div class="menu-bar">
+            <div class="menu">
+
+                {# <li class="search-box">
+                    <i class='bx bx-search icon'></i>
+                    <input type="text" placeholder="Search...">
+                </li> #}
+
+                <ul class="menu-links">
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <li class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle admin" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Admin Panel
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li ><a class="dropdown-item" href="/user">
+                                <span class="text nav-text">Usuarios</span>
+                            </a></li>
+                            {# <li ><a class="dropdown-item" href="/entidad/new">
+                                <span class="text nav-text">Entidades</span>
+                            </a></li> #}
+                        </ul>
+                    </li>
+                    {% endif %}
+                    <li class="nav-link">
+                        <a href="/home">
+                            <i class='bx bx-home-alt icon' ></i>
+                            <span class="text nav-text">Home</span>
+                        </a>
+                    </li>
+                    
+                    {# <li class="nav-link">
+                        <a href="#">
+                            <i class='bx bxs-user-plus icon' ></i>
+                            <span class="text nav-text">Personas</span>
+                        </a>
+                    </li> #}
+                
+                    <li class="nav-link">
+                        <a href="/post/new">
+                            <i class='bx bx-image-add icon'></i>
+                            <span class="text nav-text">Postear</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-link">
+                        <a href="/stats">
+                            <i class='bx bx-pie-chart-alt icon' ></i>
+                            <span class="text nav-text">Stats</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-link">
+                        <a href="/post/favoritos">
+                            <i class='bx bx-heart icon' ></i>
+                            <span class="text nav-text">Favoritos</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-link">
+                        <a href="/post/notifis">
+                            <i class='bx bx-bell icon' ></i>
+                            <span class="text nav-text">Notificaciones</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div class="bottom-content">
+                <li class="">
+                    <a href="{{ path('app_logout') }}">
+                        <i class='bx bx-log-out icon' ></i>
+                        <span class="text nav-text">Logout</span>
+                    </a>
+                </li>
+                {# Boton para habilitar Modo Oscuro, de momento descartado #}
+                {# <li class="mode">
+                    <div class="sun-moon">
+                        <i class='bx bx-moon icon moon'></i>
+                        <i class='bx bx-sun icon sun'></i>
+                    </div>
+                    <span class="mode-text text">Dark mode</span>
+
+                    <div class="toggle-switch">
+                        <span class="switch"></span>
+                    </div>
+                </li> #}
+
+            </div>
+        </div>
+
+    </nav>
+    <section class="home">
+        
+        <div class="text border-bottom head d-flex align-items-center sticky-top">
+            <h1 class="ml-100">HLANZ Social</h1>
+            <img src="/images/logotipo.png" class="logo ms-auto">
+            
+        </div>
+        <div class="cont">
+            {% block body %}{% endblock %}
+        </div>
+    </section>
+    </body>
+</html>

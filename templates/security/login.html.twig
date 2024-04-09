@@ -1,0 +1,68 @@
+{# {% extends 'base.html.twig' %} #}
+
+{# {% block title %}Log in!{% endblock %} #}
+{% block stylesheets %}
+	{{ encore_entry_link_tags('app') }}
+	<link rel="stylesheet" href="/build/style.css"> <link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<link rel='stylesheet' href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+{% endblock %}
+{% block javascripts %}
+	{{ encore_entry_script_tags('app') }}
+	{# // <script src="/build/nav.js" defer></script> #}
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+{% endblock %}
+
+{% block body %}
+	{% if error %}
+			<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+	{% endif %}
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+			<h1>HLANZ SOCIAL</h1>
+				<div class="card">
+					<form method="post" class="box">
+						<h1>Login</h1>
+						{% if app.user %}
+							<p class="text-muted">
+								Estas logueado como {{ app.user.userIdentifier }},<a href="{{ path('app_logout') }}">Logout</a></p>
+						{% else %}
+							<p class="text-muted">
+								Porfavor ingresa tu usuario y contraseña!</p>
+						
+						{% endif %}
+						<input type="text" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+						<input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+						{# <a class="forgot text-muted" href="#">Forgot password?</a> #}
+						<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+						<input type="submit" name="" value="Login">
+						<a class="forgot text-muted" href="/register">No tienes cuenta? Registrate</a>
+                        
+						<div class="col-md-12">
+							{# <ul class="social-network social-circle">
+								<li>
+									<a href="https://www.facebook.com/" class="icoFacebook" title="Facebook">
+										<i class="fab fa-facebook-f"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#" class="icoTwitter" title="Twitter">
+										<i class="fab fa-twitter"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#" class="icoGoogle" title="Google +">
+										<i class="fab fa-google-plus"></i>
+									</a>
+								</li>
+							</ul> #}
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

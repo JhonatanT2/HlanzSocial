@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Comment{% endblock %}
+
+{% block body %}
+    <h1>Edit Comment</h1>
+
+    <div class="container">
+        <div class="row text-center d-flex justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="box p-2">
+                        <h1>Editar Comentario</h1>
+                        {{ form_start(form,{'attr': {'class': 'p-2'}}) }}
+                        {{ form_errors(form) }}
+
+                        <div class="form-group">
+                            {% if app.user.id == comment.iduser.id %}
+                                {{ form_label(form.content, "Tu comentario:") }}
+                            {% else %}
+                                {{ form_label(form.content, comment.iduser.name ~ ' ha comentado:') }}
+                            {% endif %}                           
+                            {{ form_widget(form.content, {
+                                'attr': {
+                                    'class': 'form-control',
+                                    }}) }}
+                        </div>
+                        <button type="submit" class="btn btn-success m-2">Actualizar</button>
+                        {{ form_end(form) }}
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# {{ include('comment/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_comment_index') }}">back to list</a>
+
+    {{ include('comment/_delete_form.html.twig') }} #}
+{% endblock %}

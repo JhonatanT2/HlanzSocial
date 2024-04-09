@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+{% block title %}Notificaciones {% endblock %}
+
+
+
+{% block body %}
+    <head>  
+    <link rel="stylesheet" href="/build/post.css" >
+    <link rel="stylesheet" href="/build/nav.css" >
+    
+    </head>
+    <div class="container mt-5">
+        <h2>Notificaciones</h2>
+        <div class="card">
+            <div class="card-body">
+                {% if posts is empty %}
+                    <p>No hay notificaciones.</p>
+                {% else %}
+                    {% for post in posts %}
+                        {% if post.getLikes() is not empty %}
+                            {# <h5 class="card-title">Likes en el post {{ post.getId() }}</h5> #}
+                            <ul class="list-group">
+                                {% for like in post.getLikes() %}                               
+                                    <li class="list-group-item d-flex align-items-center">
+                                    {% if like.user.imageprofile %}								
+								    	<div class="userimgc"><img src="/avatares/{{like.user.imageprofile}}"></div>
+									{% else %}
+										<div class="userimgc"><img src="/avatares/user.png"></div>
+									{% endif %}
+                                        <p class="marginp fw-bold">
+                                        {% if like.user.name == app.user.name %}
+                                            Le has dado like a tu publicacion
+                                        {% else %}
+                                            {{ like.getUser().getName() }} le dio like a tu publicación.
+                                        {% endif %} 
+                                        </p>
+                                        <a href="/post/{{like.post}}" class="btn btn-outline-info ms-auto">Ver</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        {% if post.getComments() is not empty %}
+                            {# <h5 class="card-title">Comentarios en el post {{ post.getId() }}</h5> #}
+                            <ul class="list-group ">
+                                {% for comment in post.getComments() %}
+                                    <li class="list-group-item d-flex align-items-center">
+                                    {% if comment.iduser.imageprofile %}								
+								    	<div class="userimgc"><img src="/avatares/{{comment.iduser.imageprofile}}"></div>
+									{% else %}
+										<div class="userimgc"><img src="/avatares/user.png"></div>
+									{% endif %}
+                                    {% if comment.content|length > 50 %}
+                                        <p class="marginp fw-bold">
+                                        {% if comment.getIduser().getName() == app.user.name %}
+                                            Has comentado en tu publicación:
+                                        {% else %}
+                                            {{ comment.getIduser().getName() }} ha comentado en tu publicación: 
+                                        {% endif %}    
+                                        </p> {{ comment.content|slice(0,50)~'...'}}                                   
+                                    {% else %}
+                                        <p class="marginp fw-bold">
+                                        {% if comment.getIduser().getName() == app.user.name %}
+                                            Has comentado en tu publicación:
+                                        {% else %}
+                                            {{ comment.getIduser().getName() }} ha comentado en tu publicación:
+                                        {% endif %}
+                                        </p> {{ comment.content }}
+                                    {% endif %}
+                                    <a href="/post/{{comment.idpost}}" class="btn btn-outline-info ms-auto">Ver</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

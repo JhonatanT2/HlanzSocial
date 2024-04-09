@@ -1,0 +1,198 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Social HLanz
+{% endblock %}
+
+{% block body  %}
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+	<script>
+		// guardamos la id del usuario actual para usarla en el js
+	var userId = {{ app.user.id }};
+	</script>
+	<script src="/build/likes.js"></script>
+	<link rel="stylesheet" href="/build/post.css">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+	<!-- inicio apartado para añadir posts -->
+	<div
+		class="add-post">
+		{# Usamos el formulario creado por el controlador #}
+		<form method="post" action="{{ path("app_post_new") }}" enctype="multipart/form-data">
+			{{ form_start(form) }}
+			<div class="input-group">
+				{{ form_widget(form.text,{
+					'attr': {
+						'class': 'form-control rounded-corner ',
+						'placeholder': '¿Qué estas pensando?',									
+					}
+				}) }}
+			</div>
+			<div class="post-options">
+				{# Añadimos los campos para subir imagen y video #}
+					<label class="post-option" for="{{ form.image.vars.id }}"> <i class="fa fa-image"></i>
+					Imagen
+				</label>
+				{{ form_widget(form.image, {
+					'attr': {
+						'class': 'd-none',
+						
+					},
+				}) }}
+				{{ form_row(form._token) }}
+				{# {{ form_row(form.video, {'label': 'Subir video', 'attr': {'class': 'post-option', 'accept': 'video/*'}}) }} #}
+				<div class="input-group-append">
+					<button type="submit" class="btn btn-success">Publicar</button>
+				</div>
+			</div>
+
+			{{ form_end(form) }}
+		</form>
+	</div>
+	<!-- fin apartado para añadir posts -->
+	<div class="results">
+	</div>
+	<ul class="timeline">
+		{% for post in posts %}
+
+			<li>
+				<!-- inicio timeline-time -->
+				<div class="timeline-time" id="{{post.id}}">
+					<span class="date">
+						{% if post.date|date('Y-m-d') == "now"|date('Y-m-d') %}
+							HOY
+						{% else %}
+							{{ post.date ? post.date|date('d') }}
+							{{ post.date ? post.date|date('F') }}
+							{{ post.date ? post.date|date('Y') }}
+							{# {{ post.date ? post.date|date('d/m/Y') : '' }} #}
+						{% endif %}
+					</span>
+					<span class="time">{{post.date ? post.date|date('H:i') : ''}}</span>
+				</div>
+				<!-- fin timeline-time -->
+				<!-- inicio timeline-icon -->
+				<div class="timeline-icon">
+					<a href="javascript:;">&nbsp;</a>
+				</div>
+				<!-- fin timeline-icon -->
+				<!-- inicio timeline-body -->
+				<div class="timeline-body">
+					<div class="timeline-header">
+						{% if post.iduser.imageprofile %}
+							<span class="userimage"><img width='35px' height='35px' class="rounded-circle" src="avatares/{{post.iduser.imageprofile}}" alt=""></span>
+						{% else %}
+							<span class="userimage"><img width='35px' height='35px' class="rounded-circle" src="/avatares/user.png" alt=""></span>
+						{% endif %}
+						<span class="username">
+							<a href="/user/{{post.iduser.id}}">{{post.iduser}}<small></small>
+							</a>
+							{% if is_granted('ROLE_ADMIN') or app.user.id == post.iduser.id %}
+								<span class="pull-right text-muted">
+									<div class="dropdown " id="post-{{ post.id }}" onclick="menuDeploy({{ post.id }})">
+										<i class="fa fa-ellipsis-v opciones" aria-hidden=""></i>
+										<div class="dropdown-content">
+											<a href="{{ path('app_post_edit', {'id': post.id}) }}">Editar</a>
+											<a href="{{ post.id }}">{{ include('post/_delete_form.html.twig') }}</a>
+											<a href="#">3</a>
+										</div>
+									</div>
+								</span>
+							{% endif %}
+						</span>
+					</div>
+
+					<div class="timeline-content">
+						<p>
+							{{post.text}}
+						</p>
+						{% if post.image %}
+							<img src="postImage/{{post.image}}">
+						{% endif %}
+
+					</div>
+					<div class="timeline-likes">
+						<div class="stats-right">
+							{# <span class="stats-text">259 Shares</span> #}
+							<span class="stats-text">{{post.comments|length}}
+								Comentarios</span>
+						</div>
+						<div
+							class="stats">
+							{# <span class="fa-stack fa-fw stats-icon">
+														<i class="fa fa-circle fa-stack-2x text-danger"></i>
+														<i class="fa fa-heart fa-stack-1x fa-inverse t-plus-1"></i>
+													</span> #}
+							<span class="fa-stack fa-fw stats-icon">
+								<i class="fa fa-circle fa-stack-2x text-primary"></i>
+								<i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
+							</span>
+							<span class="stats-total {{post.id}}" id="{{post.id}}">{{post.likes|length}}</span>
+						</div>
+					</div>
+					<div class="timeline-footer">
+						<a href="javascript:;" class="m-r-15 text-inverse-lighter like-button" data-post-id="{{ post.id }}">
+							<i class="fa fa-thumbs-up fa-fw fa-lg m-r-3 " id="like{{post.id}}"></i>Like</a>
+						<a href="/post/{{post.id}}" class="m-r-15 text-inverse-lighter">
+							<i class="fa fa-comments fa-fw fa-lg m-r-3"></i>Comment</a>
+						{# <a href="javascript:;" class="m-r-15 text-inverse-lighter">
+							<i class="fa fa-share fa-fw fa-lg m-r-3"></i>Share</a> #}
+					</div>
+					<div class="timeline-comment-box">
+						<p class="text-center">Comentarios</p>
+						{% for comment in post.comments|slice(0, 4) %}
+							{# Renderizar los 4 comentarios más recientes #}
+							<div class="input comments" id="{{ post.id }}">
+
+								{% if comment.iduser.imageprofile %}
+									<div class="user"><img src="/avatares/{{comment.iduser.imageprofile}}"></div>
+								{% else %}
+									<div class="user"><img src="/avatares/user.png"></div>
+								{% endif %}
+								{% if is_granted('ROLE_ADMIN') or app.user.id == comment.iduser.id %}
+									<span class="pull-right text-muted">
+										<div class="dropdown " id="comment-{{ comment.id }}" onclick="menuCDeploy({{ comment.id }})">
+											<i class="fa fa-ellipsis-v opciones" aria-hidden=""></i>
+											<div class="dropdown-content">
+												<a href="{{ path('app_comment_edit', {'id': comment.id}) }}">Editar</a>
+												<a href="{{ comment.id }}">{{ include('comment/_delete_form.html.twig') }}</a>
+												
+											</div>
+										</div>
+									</span>
+								{% endif %}
+								<span class="username">
+									<a class="commentuser" href="/user/{{comment.iduser.id}}">{{ comment.iduser }}</a>
+									<small>{{ comment.date|date('Y-m-d H:i') }}</small>
+								</span>
+								<p>{{ comment.content }}</p>
+							</div>
+						{% endfor %}
+
+						{# ---- AÑADIR COMENTARIOS ---- #}
+						{# <form method="post" action="{{ path('app_comment_new') }}">
+												<input type="hidden" name="post_id" value="{{ post.id }}">
+						
+												{% set formId = 'comment_form_' ~ post.id %}
+												{{ form_start(form, {'attr': {'id': formId}}) }}
+						
+												<div class="input-group">
+													{{ form_row(form.content, {'attr': {'class': 'form-control'}}) }}
+													{{ form_row(form._token) }}
+						
+													<span class="input-group-btn p-l-10">
+														<button class="btn btn-primary f-s-12 rounded-corner" type="submit">Comment</button>
+													</span>
+												</div>
+						
+												{{ form_end(form) }}
+											</form> #}
+					</div>
+				</div>
+				<!-- fin timeline-body -->
+			</li>
+		{% endfor %}
+	</ul>
+	<script src="/build/menuedit.js"></script>
+{% endblock %}

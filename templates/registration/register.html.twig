@@ -1,0 +1,123 @@
+{# {% extends 'base.html.twig' %} #}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="/build/style.css"> 
+    <link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<link rel='stylesheet' href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+{% endblock %}
+{% block javascripts %}
+	
+	{# // <script src="/build/nav.js" defer></script> #}
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+{% endblock %}
+
+{# {% block title %}Register{% endblock %} #}
+
+{% block body %}
+    {% for flash_error in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+    {% if app.request.method == 'POST' and not registrationForm.vars.valid %}
+        <div class="alert alert-danger" role="alert">
+            Hubo errores en el formulario. Por favor, corrige los siguientes problemas:
+            <ul>
+                {% for child in registrationForm.children %}
+                    {% for error in child.vars.errors %}
+                        <li>{{ error.message }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    {# <div class="box">
+        <div class="row">
+			<div class="col-md-6">
+				<div class="card">
+                    <h1>Register</h1>
+
+                    {{ form_errors(registrationForm) }}
+
+                    {{ form_start(registrationForm) }}
+                        {{ form_row(registrationForm.email) }}
+                        {{ form_row(registrationForm.plainPassword, {
+                            label: 'Password'
+                        }) }}
+                        {{ form_row(registrationForm.agreeTerms) }}
+
+                        <button type="submit" class="btn">Register</button>
+                    {{ form_end(registrationForm) }}
+                </div>
+            </div>
+        </div>
+    </div> #}
+    <div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="card">
+                    <div class="box">
+                        <h1>Register</h1>
+
+                        {{ form_errors(registrationForm) }}
+
+                        {{ form_start(registrationForm) }}
+                            <div class="form-group">      
+                                {# {{ form_label(registrationForm.file) }} #}
+                                {{ form_widget(registrationForm.file, {'attr': {'class': 'btn btn-primary btn-file', 'id': 'inputGroupFile01',}}) }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ form_widget(registrationForm.name, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Nombre'
+                                    }
+                                }) }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ form_widget(registrationForm.lastname, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Apellidos'
+                                    }
+                                }) }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ form_widget(registrationForm.email, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Email'
+                                    }
+                                }) }}
+                            </div>
+                            
+                            <div class="form-group">
+                                {{ form_widget(registrationForm.plainPassword, {
+                                    'label': 'Password',
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Password'
+                                    },
+                                    'required': true
+                                }) }}
+                            </div>
+                            
+                            <div class="form-group">
+                                {{ form_row(registrationForm.agreeTerms, {
+                                    'label_attr': {'class': 'checkbox'},
+                                    'attr': {'class': 'form-check-input'}
+                                }) }}
+                            </div>
+
+                            <button type="submit" class="btn btn-lg btn-primary">Registrarse</button>
+                        {{ form_end(registrationForm) }}
+                    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

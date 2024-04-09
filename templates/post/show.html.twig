@@ -1,0 +1,139 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Post
+{% endblock %}
+{% block javascripts %}
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script src="/build/comments.js" defer></script>
+	<script src="/build/likes.js" ></script>
+	<script src="/build/menuedit.js" ></script>
+{% endblock %}
+
+
+{% block body %}
+	<script src="/build/nav.js" ></script>
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<link rel="stylesheet" href="/build/post.css">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+	<script src="/build/comments.js" defer></script>
+	<ul class="timeline">
+		<li>
+			<div class="timeline-time">
+				<span class="date">
+					{% if post.date|date('Y-m-d') == "now"|date('Y-m-d') %}
+						HOY
+					{% else %}
+						{{ post.date ? post.date|date('d') }}
+						{{ post.date ? post.date|date('F') }}
+						{{ post.date ? post.date|date('Y') }}
+						{# {{ post.date ? post.date|date('d/m/Y') : '' }} #}
+					{% endif %}
+				</span>
+				<span class="time">{{post.date ? post.date|date('H:i') : ''}}</span>
+			</div>
+			<!-- end timeline-time -->
+			<!-- begin timeline-icon -->
+			<div class="timeline-icon">
+				<a href="javascript:;">&nbsp;</a>
+			</div>
+			<!-- end timeline-icon -->
+			<!-- begin timeline-body -->
+			<div class="timeline-body">
+				<div class="timeline-header">
+					{% if post.iduser.imageprofile %}
+						<span class="userimage"><img width='35px' height='35px' class="rounded-circle" src="/avatares/{{post.iduser.imageprofile}}" alt=""></span>
+					{% else %}
+						<span class="userimage"><img width='35px' height='35px' class="rounded-circle" src="/avatares/user.png" alt=""></span>
+					{% endif %}
+					<span class="username">
+						<a href="#">{{post.iduser}}</a>
+						<small></small>
+					</span>
+				</div>
+
+				<div class="timeline-content">
+					<p>
+						{{post.text}}
+
+					</p>
+					{% if post.image %}
+					<img src="/postImage/{{post.image}}">
+					{% endif %}
+				</div>
+				<div class="timeline-likes">
+					<div class="stats-right">
+						<span class="stats-text">{{post.comments|length}}
+							Comentarios</span>
+					</div>
+					<div
+						class="stats">
+						<span class="fa-stack fa-fw stats-icon">
+							<i class="fa fa-circle fa-stack-2x text-primary"></i>
+							<i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
+						</span>
+						<span class="stats-total {{post.id}}" id="{{post.id}}">{{post.likes|length}}</span>
+					</div>
+				</div>
+				<div class="timeline-footer">
+					<a href="javascript:;" class="m-r-15 text-inverse-lighter like-button"  data-post-id="{{ post.id }}">
+						<i class="fa fa-thumbs-up fa-fw fa-lg m-r-3 " id="like{{post.id}}"></i>Like</a>
+					<a href="/post/{{post.id}}" class="m-r-15 text-inverse-lighter">
+						<i class="fa fa-comments fa-fw fa-lg m-r-3"></i>Comment</a>
+				</div>
+				<div class="timeline-comment-box">
+
+					<div
+						class="input">
+						{# ---- AÑADIR COMENTARIOS ---- #}
+						<form method="post" action="{{ path("app_comment_new") }}">
+							<input type="hidden" name="post_id" value="{{ post.id }}">
+							<div class="input-group">
+								{{ form_widget(form.content,{
+									'attr': {
+                                        'class': 'form-control rounded-corner ',
+                                        'placeholder': 'Escribe un comentario'
+                                    }
+								}) }}
+								{{ form_row(form._token) }}
+								<span class="input-group-btn p-l-10">
+									<button class="btn btn-primary f-s-12 rounded-corner" type="submit">Comment</button>
+								</span>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="timeline-comment-box">
+					<p class="text-center">Comentarios</p>
+					
+						{% for comment in post.comments %}
+							{# Renderizar los 4 comentarios más recientes #}
+							<div class="input comments" id="{{ post.id }}">
+								{% if comment.iduser.imageprofile %}
+									<div class="user"><img src="/avatares/{{comment.iduser.imageprofile}}"></div>
+								{% else %}
+									<div class="user"><img src="/avatares/user.png"></div>
+								{% endif %}
+								{% if is_granted('ROLE_ADMIN') or app.user.id == comment.iduser.id %}
+									<span class="pull-right text-muted">
+										<div class="dropdown " id="comment-{{ comment.id }}" onclick="menuCDeploy({{ comment.id }})">
+											<i class="fa fa-ellipsis-v opciones" aria-hidden=""></i>
+											<div class="dropdown-content">
+												<a href="{{ path('app_comment_edit', {'id': comment.id}) }}">Editar</a>
+												<a href="{{ comment.id }}">{{ include('comment/_delete_form.html.twig') }}</a>
+											</div>
+										</div>
+									</span>
+								{% endif %}
+								<span class="username">
+									<a class="commentuser" href="/user/{{comment.iduser.id}}">{{ comment.iduser }}</a>
+									<small>{{ comment.date|date('Y-m-d H:i') }}</small>
+								</span>
+								<p>{{ comment.content }}</p>
+							</div>
+						{% endfor %}
+					
+				</div>
+			</li>
+		</li>
+	</ul>
+{% endblock %}

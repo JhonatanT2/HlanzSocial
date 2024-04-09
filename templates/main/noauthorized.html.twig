@@ -1,0 +1,77 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Acceso denegado</title>
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Estilos personalizados -->
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: "Press Start 2P", cursive;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .logo {
+            width: 300px;
+            height: 150px;
+            z-index: 1;
+        }
+        .error {
+            margin-top: 20px;
+            font-size: 30px;
+            z-index: 2;
+        }
+        .button {
+            margin-top: 20px;
+            padding: 10px;
+            border: 2px solid white;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            z-index:3;
+        }
+        .button:hover {
+            background-color: white;
+            color: black;
+        }
+        /* Fondo animado */
+        @keyframes move {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 100% 0;
+            }
+        }
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("/images/denied2.jpg");
+            background-size: cover;
+            animation: move 10s linear infinite;
+            z-index:0;
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <img src="/images/denied1.jpg" alt="Logo del juego" class="logo">
+        </div>
+        <div class="row justify-content-center error">
+            <p>¡Acceso denegado!</p>
+        </div>
+        <div class="row justify-content-center button">
+            <p>Volver al menú principal</p>
+        </div>
+    </div>
+</body>
+</html>

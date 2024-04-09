@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Post Nuevo{% endblock %}
+
+{% block body %}
+    <link rel="stylesheet" href="/build/post.css" >
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <h1 class="text-center">Publica un Post</h1>
+
+    {# {{ include('post/_form.html.twig') }} #}
+    <div class="add-post">
+		{# Usamos el formulario creado por el controlador #}
+		<form method="post" action="{{ path("app_post_new") }}" enctype="multipart/form-data">
+			{{ form_start(form) }}	
+			<div class="input-group">
+				{{ form_widget(form.text,{
+									'attr': {
+                                        'class': 'form-control rounded-corner ',
+                                        'placeholder': 'Que estas pensando?',
+										
+                                    }
+								}) }}			
+			</div>
+			<div class="post-options">
+				{# Añadimos los campos para subir imagen y video #}
+				{# {{ form_row(form.image) }} #}
+				<label class="post-option" for="{{ form.image.vars.id }}">
+					<i class="fa fa-image"></i> Imagen
+				</label>
+				{{ form_widget(form.image, {
+					'attr': {
+						'class': 'd-none',
+						
+					},
+				}) }}
+				
+				{# {{ form_row(form.image, {'label': 'Subir imagen',
+					'attr': {
+						'class': 'post-option',
+						'id': 'inputGroupFile01',
+						
+					}
+				}) }} #}
+				{{ form_row(form._token) }}
+				{# {{ form_row(form.video, {'label': 'Subir video', 'attr': {'class': 'post-option', 'accept': 'video/*'}}) }} #}
+				<div class="input-group-append">
+					<button type="submit" class="btn btn-success">Publicar</button>
+				</div>
+			</div>
+			
+			{{ form_end(form) }}	
+		</form>
+	</div>
+
+    {# <a href="{{ path('app_post_index') }}">back to list</a> #}
+{% endblock %}

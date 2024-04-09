@@ -1,0 +1,10 @@
+{% if posts is not empty %}
+    <h3>Search Results:</h3>
+    <ul>
+        {% for post in posts %}
+            <li>{{ post.text }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No results found.</p>
+{% endif %}

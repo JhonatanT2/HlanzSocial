@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editar Perfil{% endblock %}
+
+{% block body %}
+    <style>
+     .imagep{
+        width: 75px;
+        margin-left: 10px;
+        margin:10px;
+     }
+    </style>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="box p-2">
+                        <h1>Editar Perfil</h1>
+
+                        {{ form_start(editForm,{'attr': {'class': 'p-2'}}) }}
+                        {{ form_errors(editForm) }}
+
+                        <div class="form-group">
+                            {{ form_label(editForm.name, "Nombre") }}
+                            {{ form_widget(editForm.name, {
+                                'attr': {
+                                    'class': 'form-control',
+                                    }}) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(editForm.lastname, "Apellido") }}
+                            {{ form_widget(editForm.lastname, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(editForm.email, "Correo Electronico") }}
+                            {{ form_widget(editForm.email, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+
+                        <div class="form-group">
+                            {% if user.imageprofile %}
+                                <img src="/avatares/{{user.imageprofile}}" class="imagep img-fluid img-thumbnail">
+                            {% else %}
+                                <img src="/avatares/user.png" class="imagep img-fluid img-thumbnail">
+                            {% endif %}
+                            {{ form_label(editForm.file, "Imagen de Perfil") }}
+                            {{ form_widget(editForm.file, {'attr': {'class': 'form-control'}}) }}
+                            
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(editForm.plainPassword, "Contraseña") }}
+                            {{ form_widget(editForm.plainPassword, {'attr': {'class': 'form-control'},
+                                                                    'required': false
+                            }) }}
+                        </div>
+
+                        <button type="submit" class="btn btn-lg btn-primary">Guardar Cambios</button>
+                        {{ form_end(editForm) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
